@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
 
@@ -5,6 +6,9 @@ import { Form } from './Form';
 
 const meta: Meta<typeof Form> = {
   component: Form,
+  args: {
+    onSubmit: action('submit'),
+  },
   parameters: {
     msw: {
       handlers: [
