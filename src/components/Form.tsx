@@ -5,7 +5,7 @@ type Option = {
   value: string;
 };
 
-const Form = () => {
+export const Form = () => {
   const [options, setOptions] = useState<Option[]>([
     { label: 'option 1', value: 'option-1' },
     { label: 'option 2', value: 'option-2' },
@@ -35,5 +35,3 @@ const Form = () => {
     </form>
   );
 };
-
-export default Form;
