@@ -15,10 +15,10 @@ export const Form = () => {
   useEffect(() => {
     fetch('/api/options')
       .then((res) => res.json())
-      .then((data) => {
-        setOptions(data);
+      .then(({ options }) => {
+        setOptions(options);
       });
-  });
+  }, []);
 
   return (
     <form>
