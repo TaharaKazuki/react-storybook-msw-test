@@ -6,6 +6,13 @@ export default defineWorkspace([
   // 'vite.config.ts',
   {
     extends: 'vite.config.ts',
+    test: {
+      include: ['src/**/*.test.{js,jsx,ts,tsx}'],
+      environment: 'jsdom',
+    },
+  },
+  {
+    extends: 'vite.config.ts',
     plugins: [
       storybookTest({
         storybookScript: 'npm run storybook --ci',
