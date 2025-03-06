@@ -12,11 +12,6 @@ beforeAll(() => server.listen());
 afterAll(() => server.close());
 
 // モックデータ
-const mockOptions = [
-  { label: 'Option 1', value: 'option-1' },
-  { label: 'Option 2', value: 'option-2' },
-  { label: 'Option 3', value: 'option-3' },
-];
 
 describe('Form', () => {
   test.concurrent(
@@ -26,20 +21,25 @@ describe('Form', () => {
       server.use(...Stories.mockHandler);
 
       // Arrange
+      const expectedSelectedValue = 'option-1';
       const submitHandler = vi.fn();
       const Form = composeStory(Stories.Default, Meta);
       render(<Form onSubmit={submitHandler} />);
 
       // オプションが読み込まれるのを待つ
       await waitFor(() => {
-        expect(screen.getAllByRole('option')).toHaveLength(mockOptions.length);
+        expect(screen.getAllByRole('option')).toHaveLength(3);
       });
 
       // Act
+      const comboBox = screen.getByRole('combobox');
+      await userEvent.selectOptions(comboBox, expectedSelectedValue);
       await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
 
       // Assert
-      expect(submitHandler).toHaveBeenCalledWith({ option: 'option-1' });
+      expect(submitHandler).toHaveBeenCalledWith({
+        option: expectedSelectedValue,
+      });
     })
   );
 });
