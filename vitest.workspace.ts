@@ -15,7 +15,7 @@ export default defineWorkspace([
     extends: 'vite.config.ts',
     plugins: [
       storybookTest({
-        storybookScript: 'npm run storybook --ci',
+        storybookScript: 'npm run storybook -- --ci',
       }),
     ],
     test: {
