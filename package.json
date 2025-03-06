@@ -11,7 +11,8 @@
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest"
+    "test": "vitest",
+    "test:browser": "vitest --workspace=vitest.workspace.ts"
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -54,7 +55,8 @@
     "storybook": "^8.6.4",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
-    "vitest": "^3.0.7"
+    "vitest": "^3.0.7",
+    "vitest-browser-react": "^0.1.1"
   },
   "eslintConfig": {
     "extends": [
