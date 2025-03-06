@@ -1,7 +1,6 @@
 import { composeStory } from '@storybook/react';
 import { userEvent } from '@storybook/test';
 import { render, screen, waitFor } from '@testing-library/react';
-import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
 
@@ -24,11 +23,7 @@ describe('Form', () => {
     'submits form data correctly',
     server.boundary(async () => {
       // APIモック
-      server.use(
-        http.get('/api/options', () => {
-          return HttpResponse.json({ options: mockOptions });
-        })
-      );
+      server.use(...Stories.mockHandler);
 
       // Arrange
       const submitHandler = vi.fn();
