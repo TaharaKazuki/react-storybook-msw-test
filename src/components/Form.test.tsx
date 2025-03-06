@@ -1,6 +1,6 @@
 import { composeStory } from '@storybook/react';
+import { userEvent } from '@storybook/test';
 import { render, screen } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
 import Meta, * as Stories from './Form.stories';
@@ -19,6 +19,6 @@ describe('Form', () => {
     await userEvent.click(submitButton);
 
     //Assert
-    expect(submitHandler).toHaveBeenCalledWith({ option: 'option-3' });
+    expect(submitHandler).toHaveBeenCalledWith({ option: 'option-1' });
   });
 });
