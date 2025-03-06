@@ -11,8 +11,6 @@ const server = setupServer();
 beforeAll(() => server.listen());
 afterAll(() => server.close());
 
-// モックデータ
-
 describe('Form', () => {
   test.concurrent(
     'submits form data correctly',
