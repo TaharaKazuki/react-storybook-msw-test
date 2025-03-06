@@ -1,24 +1,50 @@
 import { composeStory } from '@storybook/react';
 import { userEvent } from '@storybook/test';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, test, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
 
 import Meta, * as Stories from './Form.stories';
 
+const server = setupServer();
+
+beforeAll(() => server.listen());
+afterAll(() => server.close());
+
 describe('Form', () => {
-  test.concurrent('should submit correct data', async () => {
-    // Arrange
-    const submitHandler = vi.fn();
+  test.concurrent(
+    'should submit correct data',
+    server.boundary(async () => {
+      server.use(
+        http.get('/api/options', () => {
+          return HttpResponse.json({
+            options: [
+              { label: 'Option 1', value: 'option-1' },
+              { label: 'Option 2', value: 'option-2' },
+              { label: 'Option 3', value: 'option-3' },
+            ],
+          });
+        })
+      );
+      // Arrange
+      const submitHandler = vi.fn();
 
-    const Form = composeStory(Stories.Default, Meta);
-    render(<Form onSubmit={submitHandler} />);
+      const Form = composeStory(Stories.Default, Meta);
+      render(<Form onSubmit={submitHandler} />);
 
-    const submitButton = screen.getByRole('button', { name: 'Submit' });
+      await waitFor(() => {
+        const options = screen.getAllByRole('option');
+        expect(options).toHaveLength(3);
+      });
 
-    //Act
-    await userEvent.click(submitButton);
+      const submitButton = screen.getByRole('button', { name: 'Submit' });
 
-    //Assert
-    expect(submitHandler).toHaveBeenCalledWith({ option: 'option-1' });
-  });
+      //Act
+      await userEvent.click(submitButton);
+
+      //Assert
+      expect(submitHandler).toHaveBeenCalledWith({ option: 'option-1' });
+    })
+  );
 });
